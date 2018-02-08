@@ -22,16 +22,27 @@ return array(
                     ],
                 ],
             ],
+            'api-prode-ranking' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/prode/ranking',
+                    'defaults' => [
+                        'controller' => Controller\RankingController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
-            Controller\UserController::class => InvokableFactory::class
+            Controller\UserController::class => InvokableFactory::class,
+            Controller\RankingController::class => InvokableFactory::class
         ],
     ],
     'service_manager' => [
         'factories' => [
-            
+            Table\RankingTable::class => \MIABase\Factory\TableFactory::class,
         ],
     ],
     'authentication_acl' => [
@@ -40,12 +51,17 @@ return array(
                 'actions' => [
                     'mobileia' => ['allow' => 'guest'],
                 ]
-            ]
+            ],
+            Controller\RankingController::class => [
+                'actions' => [
+                    'index' => ['allow' => 'guest'],
+                ]
+            ],
         ],
     ],
-    'view_manager' => [
-        'template_map' => [
-            
-        ],
-    ]
+    'view_manager' => array(
+        'strategies' => array(
+            'ViewJsonStrategy',
+        ),
+    ),
 );
