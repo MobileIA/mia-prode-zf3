@@ -4,7 +4,7 @@ namespace MIAProde\Controller;
 
 class RankingController extends \MIABase\Controller\Api\CrudController
 {
-    protected $tableName = \Application\Table\RankingTable::class;
+    protected $tableName = \MIAProde\Table\RankingTable::class;
     
     /**
      * Configura la query, para casos especiales

@@ -6,7 +6,7 @@ class RankingTable extends \MIABase\Table\Base
 {
     protected $tableName = 'ranking';
 
-    protected $entityClass = \Application\Entity\Ranking::class;
+    protected $entityClass = \MIAProde\Entity\Ranking::class;
     /**
      * Agrega el usuario del grupo en el ranking
      * @param int $groupId
