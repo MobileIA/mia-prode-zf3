@@ -1,37 +1,41 @@
 <?php
 
-namespace MIAProde\Entity;
+namespace MIAProde\Entity\Group;
 
-class Ranking extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilterAwareInterface
+class RelationUser extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilterAwareInterface
 {
+    const ROLE_GUEST = 0;
+    const ROLE_ADMIN = 1;
+    
     /**
      * @var int
      */
     public $group_id = null;
+
     /**
      * @var int
      */
     public $user_id = null;
+
+    /**
+     * @var string
+     */
+    public $username = null;
+
+    /**
+     * @var string
+     */
+    public $phone = null;
+    
+    /**
+     * @var string
+     */
+    public $facebook_id = null;
+
     /**
      * @var int
      */
-    public $points = null;
-    /**
-     * @var string
-     */
-    public $firstname = '';
-    /**
-     * @var string
-     */
-    public $phone = '';
-    /**
-     * @var string
-     */
-    public $facebook_id = '';
-    /**
-     * @var string
-     */
-    public $photo = '';
+    public $role = null;
     /**
      *
      * @var boolean
@@ -48,11 +52,10 @@ class Ranking extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFil
         $data = parent::toArray();
         $data['group_id'] = $this->group_id;
         $data['user_id'] = $this->user_id;
-        $data['points'] = $this->points;
-        $data['firstname'] = $this->firstname;
+        $data['username'] = $this->username;
         $data['phone'] = $this->phone;
         $data['facebook_id'] = $this->facebook_id;
-        $data['photo'] = $this->photo;
+        $data['role'] = $this->role;
         return $data;
     }
 
@@ -61,11 +64,10 @@ class Ranking extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFil
         parent::exchangeArray($data);
         $this->group_id = (!empty($data['group_id'])) ? $data['group_id'] : 0;
         $this->user_id = (!empty($data['user_id'])) ? $data['user_id'] : 0;
-        $this->points = (!empty($data['points'])) ? $data['points'] : 0;
-        $this->firstname = (!empty($data['firstname'])) ? $data['firstname'] : '';
+        $this->username = (!empty($data['username'])) ? $data['username'] : '';
         $this->phone = (!empty($data['phone'])) ? $data['phone'] : '';
         $this->facebook_id = (!empty($data['facebook_id'])) ? $data['facebook_id'] : '';
-        $this->photo = (!empty($data['photo'])) ? $data['photo'] : '';
+        $this->role = (!empty($data['role'])) ? $data['role'] : 0;
     }
 
     public function exchangeObject($data)
@@ -73,11 +75,10 @@ class Ranking extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFil
         parent::exchangeObject($data);
         $this->group_id = $data->group_id;
         $this->user_id = $data->user_id;
-        $this->points = $data->points;
-        $this->firstname = $data->firstname;
+        $this->username = $data->username;
         $this->phone = $data->phone;
         $this->facebook_id = $data->facebook_id;
-        $this->photo = $data->photo;
+        $this->role = $data->role;
     }
 
     public function getInputFilter()
@@ -102,7 +103,43 @@ class Ranking extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFil
                     ],
                 ]);
         $inputFilter->add([
-                    'name' => 'points',
+                    'name' => 'username',
+                    'required' => true,
+                    'filters' => [
+                        ['name' => \Zend\Filter\StripTags::class],
+                        ['name' => \Zend\Filter\StringTrim::class],
+                    ],
+                    'validators' => [
+                        [
+                            'name' => \Zend\Validator\StringLength::class,
+                            'options' => [
+                                'encoding' => 'UTF-8',
+                                'min' => 1,
+                                'max' => 100,
+                            ],
+                        ],
+                    ],
+                ]);
+        $inputFilter->add([
+                    'name' => 'phone',
+                    'required' => true,
+                    'filters' => [
+                        ['name' => \Zend\Filter\StripTags::class],
+                        ['name' => \Zend\Filter\StringTrim::class],
+                    ],
+                    'validators' => [
+                        [
+                            'name' => \Zend\Validator\StringLength::class,
+                            'options' => [
+                                'encoding' => 'UTF-8',
+                                'min' => 1,
+                                'max' => 100,
+                            ],
+                        ],
+                    ],
+                ]);
+        $inputFilter->add([
+                    'name' => 'role',
                     'required' => true,
                     'filters' => [
                         ['name' => \Zend\Filter\ToInt::class],

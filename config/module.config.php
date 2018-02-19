@@ -32,17 +32,30 @@ return array(
                     ],
                 ],
             ],
+            'api-prode-group' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/prode/group[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\GroupController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
         'factories' => [
             Controller\UserController::class => InvokableFactory::class,
-            Controller\RankingController::class => InvokableFactory::class
+            Controller\RankingController::class => InvokableFactory::class,
+            Controller\GroupController::class => InvokableFactory::class,
         ],
     ],
     'service_manager' => [
         'factories' => [
             Table\RankingTable::class => \MIABase\Factory\TableFactory::class,
+            Table\Group\RelationUserTable::class => \MIABase\Factory\TableFactory::class,
+            Table\GroupTable::class => \MIABase\Factory\TableFactory::class,
         ],
     ],
     'authentication_acl' => [
@@ -55,6 +68,13 @@ return array(
             Controller\RankingController::class => [
                 'actions' => [
                     'index' => ['allow' => 'guest'],
+                ]
+            ],
+            Controller\GroupController::class => [
+                'actions' => [
+                    'index' => ['allow' => 'guest'],
+                    'add' => ['allow' => 'guest'],
+                    'removeUser' => ['allow' => 'guest'],
                 ]
             ],
         ],

@@ -11,9 +11,13 @@ class RankingTable extends \MIABase\Table\Base
      * Agrega el usuario del grupo en el ranking
      * @param int $groupId
      * @param int $userId
+     * @param string $firstname
+     * @param string $phone
+     * @param string $facebookId
+     * @param string $photo
      * @return int
      */
-    public function add($groupId, $userId)
+    public function add($groupId, $userId, $firstname = '', $phone = '', $facebookId = '', $photo = '')
     {
         // Verificar si ya existe el usuario en el ranking
         $row = $this->fetchByGroup($groupId, $userId);
@@ -21,10 +25,14 @@ class RankingTable extends \MIABase\Table\Base
             return;
         }
         // Crear registro en el ranking
-        $ranking = new \Application\Entity\Ranking();
+        $ranking = new \MIAProde\Entity\Ranking();
         $ranking->group_id = $groupId;
         $ranking->user_id = $userId;
         $ranking->points = 0;
+        $ranking->firstname = $firstname;
+        $ranking->phone = $phone;
+        $ranking->facebook_id = $facebookId;
+        $ranking->photo = $photo;
         // Guardar en la DB
         return $this->save($ranking);
     }
