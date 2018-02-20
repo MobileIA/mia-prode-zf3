@@ -42,6 +42,16 @@ return array(
                     ],
                 ],
             ],
+            'api-prode-match' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/prode/match[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\MatchController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -49,6 +59,7 @@ return array(
             Controller\UserController::class => InvokableFactory::class,
             Controller\RankingController::class => InvokableFactory::class,
             Controller\GroupController::class => InvokableFactory::class,
+            Controller\MatchController::class => InvokableFactory::class,
         ],
     ],
     'service_manager' => [
@@ -56,6 +67,8 @@ return array(
             Table\RankingTable::class => \MIABase\Factory\TableFactory::class,
             Table\Group\RelationUserTable::class => \MIABase\Factory\TableFactory::class,
             Table\GroupTable::class => \MIABase\Factory\TableFactory::class,
+            Table\TeamTable::class => \MIABase\Factory\TableFactory::class,
+            Table\MatchTable::class => \MIABase\Factory\TableFactory::class,
         ],
     ],
     'authentication_acl' => [
@@ -75,6 +88,14 @@ return array(
                     'index' => ['allow' => 'guest'],
                     'add' => ['allow' => 'guest'],
                     'removeUser' => ['allow' => 'guest'],
+                ]
+            ],
+            Controller\MatchController::class => [
+                'actions' => [
+                    'next' => ['allow' => 'guest'],
+                    'list' => ['allow' => 'guest'],
+                    'listPrevious' => ['allow' => 'guest'],
+                    'listNext' => ['allow' => 'guest'],
                 ]
             ],
         ],
