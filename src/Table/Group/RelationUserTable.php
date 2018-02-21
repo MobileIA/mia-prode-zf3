@@ -19,6 +19,11 @@ class RelationUserTable extends \MIABase\Table\Base
      */
     public function add($groupId, $userId, $username, $phone, $facebookId, $role = \MIAProde\Entity\Group\RelationUser::ROLE_GUEST)
     {
+        // Verificar si ya existe el usuario en el grupo
+        $row = $this->fetchByUser($groupId, $userId);
+        if($row !== null){
+            return;
+        }
         $entity = new \MIAProde\Entity\Group\RelationUser();
         $entity->group_id = $groupId;
         $entity->user_id = $userId;
