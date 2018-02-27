@@ -12,9 +12,9 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
     protected $tableName = \MIAProde\Table\GroupTable::class;
     /**
      * Almacena instancia del helper
-     * @var \Api\Helper\Firebase
+     * @var \MIAProde\Helper\FirebaseMessaging
      */
-    //protected $firebaseHelper;
+    protected $firebaseHelper;
     
     /**
      * API para la creación de un grupo
@@ -28,7 +28,7 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         // Creamos el grupo
         $group = $this->createGroup()->toArray();
         // Iniciamos firebase
-        //$this->firebaseHelper = new \Api\Helper\Firebase();
+        $this->firebaseHelper = new \MIAProde\Helper\FirebaseMessaging($this->getFirebaseMessaging());
         // Procesamos los contactos
         $this->processContacts($group['id']);
         // Guardar usuario creador en el grupo
@@ -90,9 +90,9 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         // Enviar notificacion
         if(count($miaIds) > 0){
             // Enviar notificaciones, buscamos los tokens
-            //$tokens = $this->getMobileiaAuth()->getDevicesTokenOnly($miaIds);
+            $tokens = $this->getMobileiaAuth()->getDevicesTokenOnly($miaIds);
             // Enviamos notificación
-            //$this->firebaseHelper->sendNewGroup($tokens);
+            $this->firebaseHelper->sendNewGroup($tokens);
         }
     }
     
@@ -161,11 +161,11 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         // Eliminar usuario de la DB
         $this->getRelationUserTable()->remove($groupId, $userId);
         // Iniciamos firebase
-        //$this->firebaseHelper = new \Api\Helper\Firebase();
+        $this->firebaseHelper = new \MIAProde\Helper\FirebaseMessaging($this->getFirebaseMessaging());
         // Enviar notificaciones, buscamos los tokens
         $tokens = $this->getMobileiaAuth()->getDevicesTokenOnly(array($user->mia_id));
         // Enviamos notificación
-        //$this->firebaseHelper->sendRemovedGroup($tokens, $groupId);
+        $this->firebaseHelper->sendRemovedGroup($tokens, $groupId);
         // Devolvemos respuesta correcta
         return $this->executeSuccess(true);
     }
@@ -193,5 +193,13 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
     public function getRankingTable()
     {
         return $this->getServiceManager()->get(\MIAProde\Table\RankingTable::class);
+    }
+    /**
+     * 
+     * @return \MIAFirebase\Messaging
+     */
+    public function getFirebaseMessaging()
+    {
+        return $this->getServiceManager()->get(\MIAFirebase\Messaging::class);
     }
 }
