@@ -52,6 +52,16 @@ return array(
                     ],
                 ],
             ],
+            'api-prode-prediction' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/prode/prediction[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\PredictionController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -60,6 +70,7 @@ return array(
             Controller\RankingController::class => InvokableFactory::class,
             Controller\GroupController::class => InvokableFactory::class,
             Controller\MatchController::class => InvokableFactory::class,
+            Controller\PredictionController::class => InvokableFactory::class,
         ],
     ],
     'service_manager' => [
@@ -69,6 +80,7 @@ return array(
             Table\GroupTable::class => \MIABase\Factory\TableFactory::class,
             Table\TeamTable::class => \MIABase\Factory\TableFactory::class,
             Table\MatchTable::class => \MIABase\Factory\TableFactory::class,
+            Table\PredictionTable::class => \MIABase\Factory\TableFactory::class,
         ],
     ],
     'authentication_acl' => [
@@ -96,6 +108,11 @@ return array(
                     'list' => ['allow' => 'guest'],
                     'listPrevious' => ['allow' => 'guest'],
                     'listNext' => ['allow' => 'guest'],
+                ]
+            ],
+            Controller\PredictionController::class => [
+                'actions' => [
+                    'send' => ['allow' => 'guest'],
                 ]
             ],
         ],
