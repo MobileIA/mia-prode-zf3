@@ -169,6 +169,46 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         // Devolvemos respuesta correcta
         return $this->executeSuccess(true);
     }
+    /**
+     * API para que el usuario pueda abandonar un grupo
+     * @return \Zend\View\Model\JsonModel
+     */
+    public function leaveAction()
+    {
+        // Verificamos los parametros requeridos
+        $this->checkRequiredParams(array('group_id'));
+        // Obtener parametro del grupo a dejar
+        $groupId = $this->getParam('group_id', 0);
+        // Buscar grupo en la DB
+        $group = $this->getTable()->fetchById($groupId);
+        // Verificar si es administrador del grupo
+        if(!$this->getRelationUserTable()->hasPermission($groupId, $this->getUser()->id)){
+            return $this->executeError(\MIABase\Controller\Api\Error::INVALID_ACCESS_TOKEN);
+        }
+        // Verificar si es administrador del grupo
+        if($this->getRelationUserTable()->isAdmin($groupId, $this->getUser()->id)){
+            // Asignamos a otro usuario como administrador.
+        }
+        // Eliminar usuario de la DB
+        $this->getRelationUserTable()->remove($groupId, $this->getUser()->id);
+        // Eliminar del ranking de la DB
+        $this->getRankingTable()->remove($groupId, $this->getUser()->id);
+        // Iniciamos firebase
+        $this->firebaseHelper = new \MIAProde\Helper\FirebaseMessaging($this->getFirebaseMessaging());
+        // Buscamos a los usuarios del grupo
+        $contacts = $this->getRelationUserTable()->fetchAllByGroup($groupId);
+        $miaIds = array();
+        // Recorremos los usuarios del grupo
+        foreach($contacts as $contact){
+            $miaIds[] = $contact['mia_id'];
+        }
+        // Enviar notificaciones, buscamos los tokens
+        $tokens = $this->getMobileiaAuth()->getDevicesTokenOnly($miaIds);
+        // Enviamos notificación
+        $this->firebaseHelper->sendLeaveGroup($tokens, $group->toArray(), $this->getUser()->firstname);
+        // Devolvemos respuesta correcta
+        return $this->executeSuccess(true);
+    }
     
     /**
      * 

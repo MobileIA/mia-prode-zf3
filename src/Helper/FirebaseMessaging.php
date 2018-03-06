@@ -49,4 +49,15 @@ class FirebaseMessaging
     {
         return $this->service->sendToDevices($tokens, self::TYPE_REMOVED_GROUP, array('group_id' => $groupId));
     }
+    /**
+     * 
+     * @param array $tokens
+     * @param array $group
+     * @param string $firstname
+     * @return type
+     */
+    public function sendLeaveGroup($tokens, $group, $firstname)
+    {
+        return $this->service->sendToDevices($tokens, self::TYPE_LEAVE_GROUP, array('group' => $group, 'firstname' => $firstname));
+    }
 }

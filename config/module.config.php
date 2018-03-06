@@ -100,6 +100,8 @@ return array(
                     'index' => ['allow' => 'guest'],
                     'add' => ['allow' => 'guest'],
                     'removeUser' => ['allow' => 'guest'],
+                    'leave' => ['allow' => 'guest'],
+                    'invitation' => ['allow' => 'guest'],
                 ]
             ],
             Controller\MatchController::class => [
