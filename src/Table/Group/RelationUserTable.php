@@ -114,4 +114,13 @@ class RelationUserTable extends \MIABase\Table\Base
         // Ejecutar Query
         return $this->executeQuery($select);
     }
+    /**
+     * Obtiene todos los grupos asignados del usuario
+     * @param int $userId
+     * @return array
+     */
+    public function fetchAllByUser($userId)
+    {
+        return $this->tableGateway->select(array('user_id' => $userId));
+    }
 }
