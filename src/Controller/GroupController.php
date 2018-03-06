@@ -129,6 +129,12 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         for($i = 0; $i < count($data); $i++){
             // Buscamos a los usuarios del grupo
             $data[$i]['contacts'] = $this->getRelationUserTable()->fetchAllByGroup($data[$i]['id']);
+            // Verificar si es el administrador
+            if($data[$i]['user_id'] == $this->getUser()->id){
+                $data[$i]['is_admin'] = 1;
+            }else{
+                $data[$i]['is_admin'] = 0;
+            }
         }
         
         return $data;
