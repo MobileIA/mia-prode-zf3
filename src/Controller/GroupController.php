@@ -57,7 +57,7 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
      * Funcion que se encarga de guardar los contactos del grupo
      * @param int $groupId
      */
-    protected function processContacts($groupId)
+    protected function processContacts($groupId, $points = 0)
     {
         // Obtenemos los contactos enviados
         $contacts = $this->getParam('contacts', array());
@@ -69,6 +69,10 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
             $c = $contacts[$i];
             // Verificar si se ingreso el FacebookID
             if($c->facebook == ''){
+                continue;
+            }
+            // Verificar si ya no esta agregado en el grupo el usuario
+            if($this->getRelationUserTable()->fetchByFacebook($groupId, $c->facebook) !== null){
                 continue;
             }
             // Buscar usuario
@@ -83,7 +87,7 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
                 $miaIds[] = $user->mia_id;
             }
             // Agregar usuario al ranking
-            $this->getRankingTable()->add($groupId, $userId, $firstname, '', $c->facebook);
+            $this->getRankingTable()->add($groupId, $userId, $firstname, '', $c->facebook, '', $points);
             // Guardar usuario en el grupo
             $this->getRelationUserTable()->add($groupId, $userId, $c->firstname, '', $c->facebook);
         }
@@ -208,6 +212,41 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         $this->firebaseHelper->sendLeaveGroup($tokens, $group->toArray(), $this->getUser()->firstname);
         // Devolvemos respuesta correcta
         return $this->executeSuccess(true);
+    }
+    /**
+     * API para invitar gente a un grupo ya creado
+     * @return \Zend\View\Model\JsonModel
+     */
+    public function invitationAction()
+    {
+        // Verificamos los parametros requeridos
+        $this->checkRequiredParams(array('group_id', 'contacts'));
+        // Obtener parametro del grupo a dejar
+        $groupId = $this->getParam('group_id', 0);
+        // Obtener parametro del modo
+        $modeId = $this->getParam('mode_id', 0);
+        // Buscar grupo en la DB
+        $group = $this->getTable()->fetchById($groupId);
+        // Verificamos si este usuario tiene permisos para invitar
+        if(!$this->getRelationUserTable()->isAdmin($groupId, $this->getUser()->id)){
+            return $this->executeError(\MIABase\Controller\Api\Error::INVALID_ACCESS_TOKEN);
+        }
+        // Iniciamos firebase
+        $this->firebaseHelper = new \MIAProde\Helper\FirebaseMessaging($this->getFirebaseMessaging());
+        // Verificamos que modo sea
+        $points = 0;
+        if($modeId == 2){
+            $points = $this->getParam('points', 0);
+        }else if($modeId == 1){
+            $points = $this->getRankingTable()->getMinPointsInGroup($groupId);
+        }
+        // Procesamos los contactos
+        $this->processContacts($groupId, $points);
+        // Buscamos a los usuarios del grupo
+        $data = $group->toArray();
+        $data['contacts'] = $this->getRelationUserTable()->fetchAllByGroup($groupId);
+        // Devolvemos respuesta correcta
+        return $this->executeSuccess($data);
     }
     
     /**

@@ -17,7 +17,7 @@ class RankingTable extends \MIABase\Table\Base
      * @param string $photo
      * @return int
      */
-    public function add($groupId, $userId, $firstname = '', $phone = '', $facebookId = '', $photo = '')
+    public function add($groupId, $userId, $firstname = '', $phone = '', $facebookId = '', $photo = '', $points = 0)
     {
         // Verificar si ya existe el usuario en el ranking
         $row = $this->fetchByGroup($groupId, $userId);
@@ -28,7 +28,7 @@ class RankingTable extends \MIABase\Table\Base
         $ranking = new \MIAProde\Entity\Ranking();
         $ranking->group_id = $groupId;
         $ranking->user_id = $userId;
-        $ranking->points = 0;
+        $ranking->points = $points;
         $ranking->firstname = $firstname;
         $ranking->phone = $phone;
         $ranking->facebook_id = $facebookId;
@@ -55,6 +55,42 @@ class RankingTable extends \MIABase\Table\Base
         $select->limit(3);
         $result = $this->tableGateway->getSql()->prepareStatementForSqlObject($select)->execute();
         return $result->getResource()->fetchAll();
+    }
+    /**
+     * Obtiene los ultimos diez puestos del ranking
+     * @param int $groupId
+     * @return array
+     */
+    public function fetchLast($groupId)
+    {
+        // Crear Select
+        $select = $this->tableGateway->getSql()->select();
+        // Buscamos ese torneo
+        $select->where(array('group_id' => $groupId));
+        // Join para traer los datos del usuario
+        $select->join('mia_user', 'mia_user.id = ranking.user_id', array('firstname', 'photo'));
+        // Configuramos el orden
+        $select->order('points ASC');
+        // traemos los primeros 3
+        $select->limit(10);
+        // Ejecutar query
+        return $this->executeQuery($select);
+    }
+    /**
+     * Devuelve el puntaje del ultimo jugador del ranking
+     * @param int $groupId
+     * @return int
+     */
+    public function getMinPointsInGroup($groupId)
+    {
+        // Obtener los ultimos puestos del ranking
+        $ranking = $this->fetchLast($groupId);
+        // Verificar si hay algun en el grupo
+        if(count($ranking) == 0){
+            return 0;
+        }
+        // Devolver puntos del ultimo jugador del ranking
+        return $ranking[0]['points'];
     }
     /**
      * Obtiene el usuario del grupo si existe

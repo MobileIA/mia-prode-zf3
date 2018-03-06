@@ -83,11 +83,20 @@ class RelationUserTable extends \MIABase\Table\Base
      * Obtiene el registro si existe del usuario en el grupo
      * @param int $groupId
      * @param int $userId
-     * @return \Application\Entity\Group\RelationUser
+     * @return \MIAProde\Entity\Group\RelationUser
      */
     public function fetchByUser($groupId, $userId)
     {
         return $this->tableGateway->select(array('group_id' => $groupId, 'user_id' => $userId))->current();
+    }
+    /**
+     * Obtiene un usuario a traves de su Facebook ID
+     * @param string $facebookId
+     * @return \MIAProde\Entity\Group\RelationUser|null
+     */
+    public function fetchByFacebook($groupId, $facebookId)
+    {
+        return $this->tableGateway->select(array('group_id' => $groupId,'facebook_id' => $facebookId))->current();
     }
     /**
      * Obtiene todos los usuarios registrados en el grupo
