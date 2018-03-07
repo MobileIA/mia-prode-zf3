@@ -67,16 +67,29 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         for($i = 0; $i < count($contacts); $i++){
             // Contacto
             $c = $contacts[$i];
-            // Verificar si se ingreso el FacebookID
-            if($c->facebook == ''){
+            // Verificar si ya se envia un usuario registrado
+            if($c->user_id > 0){
+                // verificar si ya no esta agregado en el grupo el usuario
+                if($this->getRelationUserTable()->fetchByUser($groupId, $c->user_id) !== null){
+                    continue;
+                }
+                // Buscar usuario
+                $user = $this->getUserTable()->fetchById($c->user_id);
+                // Crear variable de facebook
+                $facebook = '';
+            }else if($c->facebook != ''){
+                // Verificar si ya no esta agregado en el grupo el usuario
+                if($this->getRelationUserTable()->fetchByFacebook($groupId, $c->facebook) !== null){
+                    continue;
+                }
+                // Buscar usuario
+                $user = $this->getUserTable()->fetchByFacebook($c->facebook);
+                // Crear variable de facebook
+                $facebook = $c->facebook;
+            }else{
+                // No se envio nada para buscar
                 continue;
             }
-            // Verificar si ya no esta agregado en el grupo el usuario
-            if($this->getRelationUserTable()->fetchByFacebook($groupId, $c->facebook) !== null){
-                continue;
-            }
-            // Buscar usuario
-            $user = $this->getUserTable()->fetchByFacebook($c->facebook);
             // Verificar si existe
             if($user == null){
                 $userId = 0;
@@ -87,9 +100,9 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
                 $miaIds[] = $user->mia_id;
             }
             // Agregar usuario al ranking
-            $this->getRankingTable()->add($groupId, $userId, $firstname, '', $c->facebook, '', $points);
+            $this->getRankingTable()->add($groupId, $userId, $firstname, '', $facebook, '', $points);
             // Guardar usuario en el grupo
-            $this->getRelationUserTable()->add($groupId, $userId, $c->firstname, '', $c->facebook);
+            $this->getRelationUserTable()->add($groupId, $userId, $firstname, '', $facebook);
         }
         // Enviar notificacion
         if(count($miaIds) > 0){
