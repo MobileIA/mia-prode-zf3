@@ -16,6 +16,7 @@ class FirebaseMessaging
     const TYPE_NEW_GROUP = 4;
     const TYPE_REMOVED_GROUP = 5;
     const TYPE_LEAVE_GROUP = 6;
+    const TYPE_CUSTOM_NOTIFICATION = 7;
     
     /**
      *
@@ -59,5 +60,14 @@ class FirebaseMessaging
     public function sendLeaveGroup($tokens, $group, $firstname)
     {
         return $this->service->sendToDevices($tokens, self::TYPE_LEAVE_GROUP, array('group' => $group, 'firstname' => $firstname));
+    }
+    /**
+     * Envia una notificacion personalizada a todos los usuarios
+     * @param string $title
+     * @param string $message
+     */
+    public function sendNotification($title, $message)
+    {
+        return $this->service->sendToTopic('allusers', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message));
     }
 }
