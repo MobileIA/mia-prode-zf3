@@ -93,6 +93,25 @@ class MatchTable extends \MIABase\Table\Base
         return $this->executeQuery($select);
     }
     /**
+     * Obtiene los ultimos partidos de la liga
+     * @param int $userId
+     * @param int $tournamentId
+     * @param int $groupId
+     * @param int $limit
+     * @return array
+     */
+    public function fetchPrevious($userId, $tournamentId, $groupId, $limit = 10)
+    {
+        // Crear Select
+        $select = $this->createBaseSelect($userId, $tournamentId, $groupId);
+        // Seteamos el limite
+        $select->limit($limit);
+        // Configuramos el orden
+        $select->order('day DESC');
+        // Ejecutar Query
+        return $this->executeQuery($select);
+    }
+    /**
      * Obtiene los partidos que se jugaran dentro de una hora.
      * @return array
      */

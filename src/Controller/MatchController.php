@@ -54,6 +54,9 @@ class MatchController extends \MIAAuthentication\Controller\AuthCrudController
         if(count($nextMatch) > 0){
             // Obtenemos los partidos en el mdio de la lista
             $matches = $this->fetchMiddleList($nextMatch[0], $tournamentId, $group->id);
+        }else if(count($nextMatch) == 0){
+            // Obtenemos los partidos anteriores
+            $matches = $this->fetchOlder($tournamentId, $group->id);
         }
         
         // Generamos respuesta
@@ -99,6 +102,19 @@ class MatchController extends \MIAAuthentication\Controller\AuthCrudController
         $next = $this->getTable()->fetchNextByMatch($this->getUser()->id, $nextMatch['id'], $nextMatch['day'], $tournamentId, $groupId);
         // Unimos en el listado
         return array_merge($previous, $next);
+    }
+    /**
+     * Busca los ultimos partidos de la liga, si no se encontraron proximos partidos.
+     * @param type $tournamentId
+     * @param type $groupId
+     * @return type
+     */
+    protected function fetchOlder($tournamentId, $groupId)
+    {
+        // Obtener partidos anteriores
+        $previous = $this->getTable()->fetchPrevious($this->getUser()->id, $tournamentId, $groupId);
+        // Invertimos el orden del listado
+        return array_reverse($previous);
     }
     /**
      * Obtiene el grupo enviados
