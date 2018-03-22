@@ -41,18 +41,18 @@ class RankingTable extends \MIABase\Table\Base
      * @param int $groupId
      * @return array
      */
-    public function fetchTop($groupId)
+    public function fetchTop($groupId, $limit = 3)
     {
         // Crear Select
         $select = $this->tableGateway->getSql()->select();
         // Buscamos ese torneo
         $select->where(array('group_id' => $groupId));
         // Join para traer los datos del usuario
-        $select->join('mia_user', 'mia_user.id = ranking.user_id', array('firstname', 'photo'));
+        $select->join('mia_user', 'mia_user.id = ranking.user_id', array('firstname', 'lastname', 'email', 'photo'));
         // Configuramos el orden
         $select->order('points DESC');
         // traemos los primeros 3
-        $select->limit(3);
+        $select->limit($limit);
         $result = $this->tableGateway->getSql()->prepareStatementForSqlObject($select)->execute();
         return $result->getResource()->fetchAll();
     }
