@@ -129,6 +129,25 @@ class MatchTable extends \MIABase\Table\Base
         return $this->executeQuery($select);
     }
     /**
+     * 
+     * @param int $stageId
+     * @return array
+     */
+    public function fetchAllByStage($stageId)
+    {
+        // Crear Select
+        $select = $this->tableGateway->getSql()->select();
+        // Buscamos ese torneo
+        $select->where(array('match.stage_id' => $stageId));
+        // Join para traer los datos de los equipos
+        $select->join('team', 'team.id = match.team_one_id', array('title_one' => 'title', 'title_short_one' => 'title_short', 'photo_one' => 'photo'));
+        $select->join(array('team2' => 'team'), 'team2.id = match.team_two_id', array('title_two' => 'title', 'title_short_two' => 'title_short', 'photo_two' => 'photo'));
+        // Configuramos el orden
+        $select->order('day ASC');
+        // Ejecutar Query
+        return $this->executeQuery($select);
+    }
+    /**
      * Genera el select en comun, con los datos necesarios
      * @param int $tournamentId
      * @param int $groupId

@@ -62,6 +62,16 @@ return array(
                     ],
                 ],
             ],
+            'api-prode-standing' => [
+                'type'    => Segment::class,
+                'options' => [
+                    'route'    => '/api/prode/standing[/:action]',
+                    'defaults' => [
+                        'controller' => Controller\StandingController::class,
+                        'action'     => 'index',
+                    ],
+                ],
+            ],
         ],
     ],
     'controllers' => [
@@ -71,6 +81,7 @@ return array(
             Controller\GroupController::class => InvokableFactory::class,
             Controller\MatchController::class => InvokableFactory::class,
             Controller\PredictionController::class => InvokableFactory::class,
+            Controller\StandingController::class => InvokableFactory::class,
         ],
     ],
     'service_manager' => [
@@ -81,6 +92,9 @@ return array(
             Table\TeamTable::class => \MIABase\Factory\TableFactory::class,
             Table\MatchTable::class => \MIABase\Factory\TableFactory::class,
             Table\PredictionTable::class => \MIABase\Factory\TableFactory::class,
+            Table\TournamentTable::class => \MIABase\Factory\TableFactory::class,
+            Table\StageTable::class => \MIABase\Factory\TableFactory::class,
+            Table\StandingTable::class => \MIABase\Factory\TableFactory::class,
         ],
     ],
     'authentication_acl' => [
@@ -115,6 +129,11 @@ return array(
             Controller\PredictionController::class => [
                 'actions' => [
                     'send' => ['allow' => 'guest'],
+                ]
+            ],
+            Controller\StandingController::class => [
+                'actions' => [
+                    'index' => ['allow' => 'guest'],
                 ]
             ],
         ],
