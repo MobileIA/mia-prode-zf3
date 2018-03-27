@@ -165,7 +165,7 @@ class MatchTable extends \MIABase\Table\Base
         $select->join('team', 'team.id = match.team_one_id', array('title_one' => 'title', 'title_short_one' => 'title_short', 'photo_one' => 'photo'));
         $select->join(array('team2' => 'team'), 'team2.id = match.team_two_id', array('title_two' => 'title', 'title_short_two' => 'title_short', 'photo_two' => 'photo'));
         // Join para traer la predicción del usuario
-        $select->join('prediction', new \Zend\Db\Sql\Predicate\Expression('(prediction.match_id = match.id AND prediction.user_id = ' . $userId . ' AND prediction.group_id = '.$groupId.')'), array('predicted_one' => 'result_one', 'predicted_two' => 'result_two', 'points'), \Zend\Db\Sql\Select::JOIN_LEFT);
+        $select->join('prediction', new \Zend\Db\Sql\Predicate\Expression('(prediction.match_id = match.id AND prediction.user_id = ' . $userId . ' AND prediction.group_id = '.$groupId.')'), array('predicted_one' => 'result_one', 'predicted_two' => 'result_two', 'predicted_penalty_one' => 'penalty_one', 'predicted_penalty_two' => 'penalty_two', 'points'), \Zend\Db\Sql\Select::JOIN_LEFT);
         // Devolvemos select
         return $select;
     }

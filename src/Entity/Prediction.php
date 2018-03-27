@@ -33,6 +33,16 @@ class Prediction extends \MIABase\Entity\Base implements \Zend\InputFilter\Input
      * @var int
      */
     public $points = null;
+    
+    /**
+     * @var int
+     */
+    public $penalty_one = null;
+
+    /**
+     * @var int
+     */
+    public $penalty_two = null;
     /**
      *
      * @var boolean
@@ -53,6 +63,8 @@ class Prediction extends \MIABase\Entity\Base implements \Zend\InputFilter\Input
         $data['result_one'] = $this->result_one;
         $data['result_two'] = $this->result_two;
         $data['points'] = $this->points;
+        $data['penalty_one'] = $this->penalty_one;
+        $data['penalty_two'] = $this->penalty_two;
         return $data;
     }
 
@@ -65,6 +77,8 @@ class Prediction extends \MIABase\Entity\Base implements \Zend\InputFilter\Input
         $this->result_one = (!empty($data['result_one'])) ? $data['result_one'] : 0;
         $this->result_two = (!empty($data['result_two'])) ? $data['result_two'] : 0;
         $this->points = (!empty($data['points'])) ? $data['points'] : 0;
+        $this->penalty_one = (!empty($data['penalty_one'])) ? $data['penalty_one'] : 0;
+        $this->penalty_two = (!empty($data['penalty_two'])) ? $data['penalty_two'] : 0;
     }
 
     public function exchangeObject($data)
@@ -76,6 +90,8 @@ class Prediction extends \MIABase\Entity\Base implements \Zend\InputFilter\Input
         $this->result_one = $data->result_one;
         $this->result_two = $data->result_two;
         $this->points = $data->points;
+        $this->penalty_one = $data->penalty_one;
+        $this->penalty_two = $data->penalty_two;
     }
 
     public function getInputFilter()

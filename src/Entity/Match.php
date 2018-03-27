@@ -37,6 +37,16 @@ class Match extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
      * @var int
      */
     public $result_two = null;
+    
+    /**
+     * @var int
+     */
+    public $penalty_one = null;
+
+    /**
+     * @var int
+     */
+    public $penalty_two = null;
 
     /**
      * @var int
@@ -66,6 +76,8 @@ class Match extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
         $data['result_one'] = $this->result_one;
         $data['team_two_id'] = $this->team_two_id;
         $data['result_two'] = $this->result_two;
+        $data['penalty_one'] = $this->penalty_one;
+        $data['penalty_two'] = $this->penalty_two;
         $data['status'] = $this->status;
         $data['external_id'] = $this->external_id;
         return $data;
@@ -80,6 +92,8 @@ class Match extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
         $this->result_one = (!empty($data['result_one'])) ? $data['result_one'] : 0;
         $this->team_two_id = (!empty($data['team_two_id'])) ? $data['team_two_id'] : 0;
         $this->result_two = (!empty($data['result_two'])) ? $data['result_two'] : 0;
+        $this->penalty_one = (!empty($data['penalty_one'])) ? $data['penalty_one'] : 0;
+        $this->penalty_two = (!empty($data['penalty_two'])) ? $data['penalty_two'] : 0;
         $this->status = (!empty($data['status'])) ? $data['status'] : 0;
         $this->external_id = (!empty($data['external_id'])) ? $data['external_id'] : 0;
     }
@@ -93,6 +107,8 @@ class Match extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
         $this->result_one = $data->result_one;
         $this->team_two_id = $data->team_two_id;
         $this->result_two = $data->result_two;
+        $this->penalty_one = $data->penalty_one;
+        $this->penalty_two = $data->penalty_two;
         $this->status = $data->status;
         $this->external_id = $data->external_id;
     }
