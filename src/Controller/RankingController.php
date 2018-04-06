@@ -18,7 +18,7 @@ class RankingController extends \MIABase\Controller\Api\CrudController
         // Buscamos ese torneo
         $select->where(array('group_id' => $groupId));
         // Join para traer los datos del usuario
-        $select->join('mia_user', 'mia_user.id = ranking.user_id', array('firstname', 'photo'));
+        $select->join('mia_user', 'mia_user.id = ranking.user_id', array('firstname', 'photo'), \Zend\Db\Sql\Select::JOIN_LEFT);
         // Configuramos el orden
         $select->order('points DESC');
         // Devolvemos select personalizado
