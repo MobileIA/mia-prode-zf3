@@ -38,6 +38,8 @@ class RankingController extends \MIAAuthentication\Controller\AuthCrudController
             // Verificamos si el usuario tiene cuenta
             if($data[$i]['user_id'] != null||$data[$i]['user_id'] > 0){
                 $data[$i]['firstname'] = $data[$i]['firstname_user'];
+            }else{
+                $data[$i]['firstname'] = $data[$i]['username'];
             }
             unset($data[$i]['firstname_user']);
             // Verificar si es el usuario logueado
