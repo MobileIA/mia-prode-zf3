@@ -108,7 +108,7 @@ class RelationUserTable extends \MIABase\Table\Base
         // Crear Select
         $select = $this->tableGateway->getSql()->select();
         // Join para traer los datos del usuario
-        $select->join('mia_user', 'mia_user.id = group_users.user_id', array('firstname', 'photo'), \Zend\Db\Sql\Select::JOIN_LEFT);
+        $select->join('mia_user', 'mia_user.id = group_users.user_id', array('firstname', 'photo', 'email'), \Zend\Db\Sql\Select::JOIN_LEFT);
         // Buscamos ese torneo
         $select->where(array('group_id' => $groupId));
         // Ejecutar Query
