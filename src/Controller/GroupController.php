@@ -171,26 +171,44 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         // Obtener parametro del grupo a mostrar
         $groupId = $this->getParam('group_id', 0);
         $userId = $this->getParam('user_id', 0);
+        $groupRelationId = $this->getParam('group_relation_id', 0);
         // Verificar si es administrador del grupo
         if(!$this->getRelationUserTable()->isAdmin($groupId, $this->getUser()->id)){
             return $this->executeError(\MIABase\Controller\Api\Error::INVALID_ACCESS_TOKEN);
         }
-        // Buscamos usuario a eliminar
-        $user = $this->getUserTable()->fetchById($userId);
-        // Verificamos si existe
-        if($user === null){
-            return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
+        if($userId > 0){
+            // Buscamos usuario a eliminar
+            $user = $this->getUserTable()->fetchById($userId);
+            // Verificamos si existe
+            if($user === null){
+                return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
+            }
+            // Eliminar usuario de la DB
+            $this->getRelationUserTable()->remove($groupId, $userId);
+            // Eliminar del ranking de la DB
+            $this->getRankingTable()->remove($groupId, $userId);
+            // Iniciamos firebase
+            $this->firebaseHelper = new \MIAProde\Helper\FirebaseMessaging($this->getFirebaseMessaging());
+            // Enviar notificaciones, buscamos los tokens
+            $tokens = $this->getMobileiaAuth()->getDevicesTokenOnly(array($user->mia_id));
+            // Enviamos notificación
+            $this->firebaseHelper->sendRemovedGroup($tokens, $groupId);
+        }else{
+            // Obtener relacion
+            $relationUser = $this->getRelationUserTable()->fetchById($groupRelationId);
+            if($relationUser === null){
+                return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
+            }
+            // Verificar si es del mismo grupo
+            if($groupId != $relationUser->group_id){
+                return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
+            }
+            // Eliminar del ranking de la DB
+            $this->getRankingTable()->removeByName($groupId, $userId);
+            // Eliminamos del grupo
+            $this->getRelationUserTable()->deleteById($relationUser->id);
         }
-        // Eliminar usuario de la DB
-        $this->getRelationUserTable()->remove($groupId, $userId);
-        // Eliminar del ranking de la DB
-        $this->getRankingTable()->remove($groupId, $userId);
-        // Iniciamos firebase
-        $this->firebaseHelper = new \MIAProde\Helper\FirebaseMessaging($this->getFirebaseMessaging());
-        // Enviar notificaciones, buscamos los tokens
-        $tokens = $this->getMobileiaAuth()->getDevicesTokenOnly(array($user->mia_id));
-        // Enviamos notificación
-        $this->firebaseHelper->sendRemovedGroup($tokens, $groupId);
+        
         // Devolvemos respuesta correcta
         return $this->executeSuccess(true);
     }

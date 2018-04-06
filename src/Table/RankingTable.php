@@ -112,4 +112,14 @@ class RankingTable extends \MIABase\Table\Base
     {
         return $this->tableGateway->delete(array('group_id' => $groupId, 'user_id' => $userId));
     }
+    /**
+     * Eliminar un usuario del ranking a traves de su nombre
+     * @param int $groupId
+     * @param string $firstname
+     * @return int
+     */
+    public function removeByName($groupId, $firstname)
+    {
+        return $this->tableGateway->delete(array('group_id' => $groupId, 'user_id' => 0, 'firstname' => $firstname));
+    }
 }
