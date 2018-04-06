@@ -167,7 +167,7 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
     public function removeUserAction()
     {
         // Verificamos los parametros requeridos
-        $this->checkRequiredParams(array('group_id', 'user_id'));
+        $this->checkRequiredParams(array('group_id'));
         // Obtener parametro del grupo a mostrar
         $groupId = $this->getParam('group_id', 0);
         $userId = $this->getParam('user_id', 0);
