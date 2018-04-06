@@ -183,6 +183,8 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         }
         // Eliminar usuario de la DB
         $this->getRelationUserTable()->remove($groupId, $userId);
+        // Eliminar del ranking de la DB
+        $this->getRankingTable()->remove($groupId, $userId);
         // Iniciamos firebase
         $this->firebaseHelper = new \MIAProde\Helper\FirebaseMessaging($this->getFirebaseMessaging());
         // Enviar notificaciones, buscamos los tokens
