@@ -32,7 +32,7 @@ class PredictionController extends \MIAAuthentication\Controller\AuthCrudControl
             return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
         }
         // Guardamos nueva predicción
-        $this->getPredictionTable()->update($groupId, $matchId, $this->getUser()->id, $this->getParam('result_one', 0), $this->getParam('result_two', 0));
+        $this->getPredictionTable()->update($groupId, $matchId, $this->getUser()->id, $this->getParam('result_one', 0), $this->getParam('result_two', 0), $this->getParam('penalty_one', 0), $this->getParam('penalty_two', 0));
         // Devolvemos respuesta correcta
         return $this->executeSuccess(true);
     }

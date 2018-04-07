@@ -16,7 +16,7 @@ class PredictionTable extends \MIABase\Table\Base
      * @param int $resultTwo
      * @return int
      */
-    public function update($groupId, $matchId, $userId, $resultOne, $resultTwo)
+    public function update($groupId, $matchId, $userId, $resultOne, $resultTwo, $penaltyOne = 0, $penaltyTwo = 0)
     {
         // Buscar si ya existe
         $entity = $this->fetchByMatch($groupId, $matchId, $userId);
@@ -26,13 +26,13 @@ class PredictionTable extends \MIABase\Table\Base
             $entity->group_id = $groupId;
             $entity->match_id = $matchId;
             $entity->user_id = $userId;
-            $entity->penalty_one = 0;
-            $entity->penalty_two = 0;
             $entity->points = -1;
         }
         // Configuramos nuevos parametros
         $entity->result_one = $resultOne;
         $entity->result_two = $resultTwo;
+        $entity->penalty_one = $penaltyOne;
+        $entity->penalty_two = $penaltyTwo;
         // Guardamos
         return $this->save($entity);
     }
