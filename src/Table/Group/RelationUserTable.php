@@ -34,6 +34,16 @@ class RelationUserTable extends \MIABase\Table\Base
         return $this->save($entity);
     }
     /**
+     * Actualiza el ID del usuario a traves de su FacebookID
+     * @param int $facebookId
+     * @param int $userId
+     * @return int
+     */
+    public function updateByFacebook($facebookId, $userId)
+    {
+        return $this->tableGateway->update(array('user_id' => $userId), array('facebook_id' => $facebookId));
+    }
+    /**
      * Elimina un usuario de un grupo
      * @param int $groupId
      * @param int $userId
