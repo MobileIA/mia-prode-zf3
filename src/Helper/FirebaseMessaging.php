@@ -70,4 +70,22 @@ class FirebaseMessaging
     {
         return $this->service->sendToTopic('allusers', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message));
     }
+    /**
+     * Envia notificacion de que se acerto exactamente el resultado
+     * @param array $tokens
+     * @return type
+     */
+    public function sendPredictionCorrect($tokens)
+    {
+        return $this->service->sendToDevices($tokens, self::TYPE_PREDICTION_CORRECT, array());
+    }
+    /**
+     * Informa de que se actualizo un partido
+     * @param array $match
+     * @return type
+     */
+    public function sendToMatch($match)
+    {
+        return $this->service->sendToTopic('updateMatch', self::TYPE_CHANGE_MATCH, array('match' => $match));
+    }
 }
