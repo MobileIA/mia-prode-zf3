@@ -9,7 +9,6 @@ namespace MIAProde\Helper;
  */
 class FirebaseMessaging 
 {
-    
     const TYPE_CHANGE_MATCH = 1;
     const TYPE_MATCHES_NOW = 2;
     const TYPE_PREDICTION_CORRECT = 3;
@@ -48,7 +47,7 @@ class FirebaseMessaging
      */
     public function sendRemovedGroup($tokens, $groupId)
     {
-        return $this->service->sendToDevices($tokens, self::TYPE_REMOVED_GROUP, array('group_id' => $groupId));
+        return $this->service->sendToTopicWithNotification($tokens, self::TYPE_REMOVED_GROUP, array('group_id' => $groupId), 'Te han eliminado de un grupo!', 'El administrador del grupo te ha eliminado.');
     }
     /**
      * 
@@ -59,7 +58,7 @@ class FirebaseMessaging
      */
     public function sendLeaveGroup($tokens, $group, $firstname)
     {
-        return $this->service->sendToDevices($tokens, self::TYPE_LEAVE_GROUP, array('group' => $group, 'firstname' => $firstname));
+        return $this->service->sendToDevicesWithNotification($tokens, self::TYPE_LEAVE_GROUP, array('group' => $group, 'firstname' => $firstname), 'Un usuario ha abandonado el grupo!', $firstname . ' ha abandona el grupo: '. $group['title']);
     }
     /**
      * Envia una notificacion personalizada a todos los usuarios
@@ -68,7 +67,7 @@ class FirebaseMessaging
      */
     public function sendNotification($title, $message)
     {
-        return $this->service->sendToTopic('allusers', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message));
+        return $this->service->sendToTopicWithNotification('allusers', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message), $title, $message);
     }
     /**
      * Envia notificacion de que se acerto exactamente el resultado
@@ -77,7 +76,7 @@ class FirebaseMessaging
      */
     public function sendPredictionCorrect($tokens)
     {
-        return $this->service->sendToDevices($tokens, self::TYPE_PREDICTION_CORRECT, array());
+        return $this->service->sendToDevicesWithNotification($tokens, self::TYPE_PREDICTION_CORRECT, array(), 'En el blanco!', 'Tu predicción fue perfecta. Mirá tu ranking');
     }
     /**
      * Informa de que se actualizo un partido
