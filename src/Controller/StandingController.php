@@ -20,9 +20,9 @@ class StandingController extends \MIAAuthentication\Controller\AuthCrudControlle
         // Recorremos los stages
         foreach($stages as $stage){
             if($stage->has_penalty == 1){
-                $data[] = array('title' => $stage->title, 'has_penalty' => $stage->has_penalty, 'list' => $this->getMatchTable()->fetchAllByStage($stage->id));
+                $data[] = array('title' => $stage->title, 'has_penalty' => $stage->has_penalty, 'matches' => $this->getMatchTable()->fetchAllByStage($stage->id), 'list' => array());
             }else{
-                $data[] = array('title' => $stage->title, 'has_penalty' => $stage->has_penalty, 'list' => $this->getStandingTable()->fetchAllByStage($stage->id));
+                $data[] = array('title' => $stage->title, 'has_penalty' => $stage->has_penalty, 'list' => $this->getStandingTable()->fetchAllByStage($stage->id), 'matches' => array());
             }
         }
         // Creamos respuesta
