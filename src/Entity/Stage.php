@@ -42,6 +42,11 @@ class Stage extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
     /**
      * @var int
      */
+    public $max_points = 5;
+    
+    /**
+     * @var int
+     */
     public $external_id = null;
     
     /**
@@ -65,6 +70,7 @@ class Stage extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
         $data['end'] = $this->end;
         $data['external_id'] = $this->external_id;
         $data['has_penalty'] = $this->has_penalty;
+        $data['max_points'] = $this->max_points;
         return $data;
     }
 
@@ -78,6 +84,7 @@ class Stage extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
         $this->end = (!empty($data['end'])) ? $data['end'] : '';
         $this->external_id = (!empty($data['external_id'])) ? $data['external_id'] : 0;
         $this->has_penalty = (!empty($data['has_penalty'])) ? $data['has_penalty'] : 0;
+        $this->max_points = (!empty($data['max_points'])) ? $data['max_points'] : 5;
     }
 
     public function exchangeObject($data)
@@ -90,6 +97,7 @@ class Stage extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
         $this->end = $data->end;
         $this->external_id = $data->external_id;
         $this->has_penalty = $data->has_penalty;
+        $this->max_points = $data->max_points;
     }
 
     public function getInputFilter()

@@ -160,7 +160,7 @@ class MatchTable extends \MIABase\Table\Base
         // Buscamos ese torneo
         $select->where(array('stage.tournament_id' => $tournamentId));
         // Join para traer los datos del Stage
-        $select->join('stage', 'stage.id = match.stage_id', array('has_penalty'));
+        $select->join('stage', 'stage.id = match.stage_id', array('has_penalty','max_points'));
         // Join para traer los datos de los equipos
         $select->join('team', 'team.id = match.team_one_id', array('title_one' => 'title', 'title_short_one' => 'title_short', 'photo_one' => 'photo'));
         $select->join(array('team2' => 'team'), 'team2.id = match.team_two_id', array('title_two' => 'title', 'title_short_two' => 'title_short', 'photo_two' => 'photo'));
