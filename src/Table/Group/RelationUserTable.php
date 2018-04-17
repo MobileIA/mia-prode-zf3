@@ -109,6 +109,16 @@ class RelationUserTable extends \MIABase\Table\Base
         return $this->tableGateway->select(array('group_id' => $groupId,'facebook_id' => $facebookId))->current();
     }
     /**
+     * Obtiene un usuario a traves del Telefono
+     * @param int $groupId
+     * @param string $phone
+     * @return \MIAProde\Entity\Group\RelationUser|null
+     */
+    public function fetchByPhone($groupId, $phone)
+    {
+        return $this->tableGateway->select(array('group_id' => $groupId,'phone' => $phone))->current();
+    }
+    /**
      * Obtiene todos los usuarios registrados en el grupo
      * @param int $groupId
      * @return array
