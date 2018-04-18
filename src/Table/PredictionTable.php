@@ -56,4 +56,13 @@ class PredictionTable extends \MIABase\Table\Base
     {
         return $this->tableGateway->select(array('match_id' => $matchId));
     }
+    /**
+     * Obtener todas las predicciones del usuario
+     * @param int $userId
+     * @return array
+     */
+    public function fetchAllByUser($userId)
+    {
+        return $this->tableGateway->select(array('user_id' => $userId));
+    }
 }
