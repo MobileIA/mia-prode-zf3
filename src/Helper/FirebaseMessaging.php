@@ -37,7 +37,7 @@ class FirebaseMessaging
      */
     public function sendNewGroup($tokens)
     {
-        return $this->service->sendToDevices($tokens, self::TYPE_NEW_GROUP);
+        return $this->service->sendToDevicesWithNotification($tokens, self::TYPE_NEW_GROUP, array(), 'Nuevo Grupo!', 'Uno de tus amigos, te ha invitado, entra a ganarle.');
     }
     /**
      * 
@@ -67,7 +67,8 @@ class FirebaseMessaging
      */
     public function sendNotification($title, $message)
     {
-        return $this->service->sendToTopicWithNotification('allusers', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message), $title, $message);
+        $this->service->sendToTopic('allusers', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message));
+        return $this->service->sendToTopicWithNotification('allusers-ios', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message), $title, $message);
     }
     /**
      * Envia notificacion de que se acerto exactamente el resultado
