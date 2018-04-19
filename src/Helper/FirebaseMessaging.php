@@ -37,7 +37,7 @@ class FirebaseMessaging
      */
     public function sendNewGroup($tokens)
     {
-        return $this->service->sendToDevicesWithNotification($tokens, self::TYPE_NEW_GROUP, array(), 'Nuevo Grupo!', 'Uno de tus amigos, te ha invitado, entra a ganarle.');
+        return $this->service->sendToDevicesWithNotification($tokens, self::TYPE_NEW_GROUP, array(), 'Nuevo Grupo!', '¡Nuevo Grupo! Fuiste incorporado a un nuevo grupo para jugar en AdivinaGol. Ingresá haciendo clic aquí.');
     }
     /**
      * 
@@ -77,7 +77,7 @@ class FirebaseMessaging
      */
     public function sendPredictionCorrect($tokens)
     {
-        return $this->service->sendToDevicesWithNotification($tokens, self::TYPE_PREDICTION_CORRECT, array(), 'En el blanco!', 'Tu predicción fue perfecta. Mirá tu ranking');
+        return $this->service->sendToDevicesWithNotification($tokens, self::TYPE_PREDICTION_CORRECT, array(), 'En el blanco!', '¡Felicitaciones! En tu último pronóstico ganaste muchos puntos, ingresá al ranking y conocé tu nueva posición.');
     }
     /**
      * Informa de que se actualizo un partido
