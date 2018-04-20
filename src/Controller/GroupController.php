@@ -50,6 +50,7 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         $entity->tournament_id = $this->getParam('tournament_id', -1);
         $entity->user_id = $this->getUser()->id;
         $entity->title = $this->getParam('title', '');
+        $entity->is_closed = 0;
         $this->getTable()->save($entity);
         return $entity;
     }

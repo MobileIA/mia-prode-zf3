@@ -20,6 +20,7 @@ class GroupTable extends \MIABase\Table\Base
         $entity->tournament_id = $tournmentId;
         $entity->user_id = $userId;
         $entity->title = $title;
+        $entity->is_closed = 0;
         return $this->save($entity);
     }
     /**

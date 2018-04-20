@@ -24,6 +24,11 @@ class Group extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
      */
     public $start_date = null;
 
+    /**
+     * @var int
+     */
+    public $is_closed = 0;
+
     public function toArray()
     {
         $data = parent::toArray();
@@ -31,6 +36,7 @@ class Group extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
         $data['user_id'] = $this->user_id;
         $data['title'] = $this->title;
         $data['start_date'] = $this->start_date;
+        $data['is_closed'] = $this->is_closed;
         return $data;
     }
 
@@ -39,6 +45,7 @@ class Group extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
         parent::exchangeArray($data);
         $this->tournament_id = (!empty($data['tournament_id'])) ? $data['tournament_id'] : 0;
         $this->user_id = (!empty($data['user_id'])) ? $data['user_id'] : 0;
+        $this->is_closed = (!empty($data['is_closed'])) ? $data['is_closed'] : 0;
         $this->title = (!empty($data['title'])) ? $data['title'] : '';
         $this->start_date = (!empty($data['start_date'])) ? $data['start_date'] : '';
     }
@@ -50,6 +57,7 @@ class Group extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
         $this->user_id = $data->user_id;
         $this->title = $data->title;
         $this->start_date = $data->start_date;
+        $this->is_closed = $data->is_closed;
     }
 
     public function getInputFilter()
