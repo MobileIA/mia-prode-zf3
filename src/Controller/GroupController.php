@@ -250,6 +250,10 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
         $tokens = $this->getMobileiaAuth()->getDevicesTokenOnly($miaIds);
         // Enviamos notificación
         $this->firebaseHelper->sendLeaveGroup($tokens, $group->toArray(), $this->getUser()->firstname);
+        // Enviar notificaciones, buscamos los tokens
+        $tokensMe = $this->getMobileiaAuth()->getDevicesTokenOnly(array($this->getUser()->mia_id));
+        // Enviamos notificación
+        $this->firebaseHelper->sendRemovedGroup($tokensMe, $groupId);
         // Devolvemos respuesta correcta
         return $this->executeSuccess(true);
     }

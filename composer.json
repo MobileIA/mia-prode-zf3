@@ -1,7 +1,7 @@
 {
     "name": "mobileia/mia-prode-zf3",
     "description": "The library for Prode.",
-    "version": "0.0.41",
+    "version": "0.0.42",
     "minimum-stability": "stable",
     "license": "MIT",
     "authors": [
