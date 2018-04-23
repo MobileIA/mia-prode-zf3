@@ -20,9 +20,11 @@ class RankingTable extends \MIABase\Table\Base
     public function add($groupId, $userId, $firstname = '', $phone = '', $facebookId = '', $photo = '', $points = 0)
     {
         // Verificar si ya existe el usuario en el ranking
-        $row = $this->fetchByGroup($groupId, $userId);
-        if($row !== null){
-            return;
+        if($userId != 0){
+            $row = $this->fetchByGroup($groupId, $userId);
+            if($row !== null){
+                return;
+            }
         }
         // Crear registro en el ranking
         $ranking = new \MIAProde\Entity\Ranking();
