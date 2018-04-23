@@ -36,7 +36,7 @@ class RankingController extends \MIAAuthentication\Controller\AuthCrudController
         // Recorremos los grupos
         for($i = 0; $i < count($data); $i++){
             // Verificamos si el usuario tiene cuenta
-            if($data[$i]['user_id'] != null||$data[$i]['user_id'] > 0){
+            if($data[$i]['user_id'] != null||intval($data[$i]['user_id']) > 0){
                 $data[$i]['firstname'] = $data[$i]['firstname_user'];
             }
             unset($data[$i]['firstname_user']);
