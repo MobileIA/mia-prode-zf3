@@ -48,7 +48,8 @@ class Points
         /* @var $stage \MIAProde\Entity\Stage */
         $stage = $this->getStageTable()->fetchById($match->stage_id);
         self::$POINTS_ONE = $stage->max_points;
-        self::$POINTS_TWO = 10;
+        self::$POINTS_TWO = $stage->max_points_two;
+        self::$POINTS_THREE = $stage->max_points_three;
         // Recorremos las predicciones
         foreach($predictions as $prediction){
             /* @var $prediction \MIAProde\Entity\Prediction */
@@ -65,22 +66,22 @@ class Points
                 $prediction->points = self::$POINTS_ONE;
                 if($stage->has_penalty == 1 && $match->penalty_one == $prediction->penalty_one && $match->penalty_two == $prediction->penalty_two){
                     $ranking->points += self::$POINTS_ONE;
-                    $prediction->points = self::$POINTS_ONE + self::$POINTS_ONE;
+                    $prediction->points = self::$POINTS_ONE + self::$POINTS_THREE;
                 }
                 // Agregar el usuario a la lista
                 $this->predictionCorrectUsers[] = $prediction->user_id;
             }else if( $match->result_one == $match->result_two && $prediction->result_one == $prediction->result_two ){
-                $ranking->points += self::$POINTS_THREE;
-                $prediction->points = self::$POINTS_THREE;
+                $ranking->points += self::$POINTS_TWO;
+                $prediction->points = self::$POINTS_TWO;
                 if($stage->has_penalty == 1 && $match->penalty_one == $prediction->penalty_one && $match->penalty_two == $prediction->penalty_two){
-                    $ranking->points += self::$POINTS_ONE;
-                    $prediction->points = self::$POINTS_THREE + self::$POINTS_ONE;
+                    $ranking->points += self::$POINTS_THREE;
+                    $prediction->points = self::$POINTS_TWO + self::$POINTS_THREE;
                 }
             }else if( ($match->result_one > $match->result_two && $prediction->result_one > $prediction->result_two) 
                     || ($match->result_two > $match->result_one && $prediction->result_two > $prediction->result_one) ){
                 // Sumar puntaje
-                $ranking->points += self::$POINTS_THREE;
-                $prediction->points = self::$POINTS_THREE;
+                $ranking->points += self::$POINTS_TWO;
+                $prediction->points = self::$POINTS_TWO;
             }
             // Guardar ranking
             $this->getRankingTable()->save($ranking);
