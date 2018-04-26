@@ -12,15 +12,15 @@ class Points
     /**
      * Puntos por predicción exacta
      */
-    const POINTS_ONE = 3;
+    static $POINTS_ONE = 3;
     /**
      * Puntos por predicción de ganador y goles / Puntos por predección de empate con diferencia de goles
      */
-    const POINTS_TWO = 2;
+    static $POINTS_TWO = 2;
     /**
      * Puntos por predicción del ganador
      */
-    const POINTS_THREE = 1;
+    static $POINTS_THREE = 1;
     /**
      * Almacena Service Manager
      * @var type 
@@ -61,26 +61,26 @@ class Points
             // Predicción correcta
             if($match->result_one == $prediction->result_one && $match->result_two == $prediction->result_two){
                 // Sumar puntaje
-                $ranking->points += self::POINTS_ONE;
-                $prediction->points = self::POINTS_ONE;
+                $ranking->points += self::$POINTS_ONE;
+                $prediction->points = self::$POINTS_ONE;
                 if($stage->has_penalty == 1 && $match->penalty_one == $prediction->penalty_one && $match->penalty_two == $prediction->penalty_two){
-                    $ranking->points += self::POINTS_ONE;
-                    $prediction->points = self::POINTS_ONE + self::POINTS_ONE;
+                    $ranking->points += self::$POINTS_ONE;
+                    $prediction->points = self::$POINTS_ONE + self::$POINTS_ONE;
                 }
                 // Agregar el usuario a la lista
                 $this->predictionCorrectUsers[] = $prediction->user_id;
             }else if( $match->result_one == $match->result_two && $prediction->result_one == $prediction->result_two ){
-                $ranking->points += self::POINTS_THREE;
-                $prediction->points = self::POINTS_THREE;
+                $ranking->points += self::$POINTS_THREE;
+                $prediction->points = self::$POINTS_THREE;
                 if($stage->has_penalty == 1 && $match->penalty_one == $prediction->penalty_one && $match->penalty_two == $prediction->penalty_two){
-                    $ranking->points += self::POINTS_ONE;
-                    $prediction->points = self::POINTS_THREE + self::POINTS_ONE;
+                    $ranking->points += self::$POINTS_ONE;
+                    $prediction->points = self::$POINTS_THREE + self::$POINTS_ONE;
                 }
             }else if( ($match->result_one > $match->result_two && $prediction->result_one > $prediction->result_two) 
                     || ($match->result_two > $match->result_one && $prediction->result_two > $prediction->result_one) ){
                 // Sumar puntaje
-                $ranking->points += self::POINTS_THREE;
-                $prediction->points = self::POINTS_THREE;
+                $ranking->points += self::$POINTS_THREE;
+                $prediction->points = self::$POINTS_THREE;
             }
             // Guardar ranking
             $this->getRankingTable()->save($ranking);
