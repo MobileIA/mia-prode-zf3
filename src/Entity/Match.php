@@ -7,6 +7,7 @@ class Match extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
     const STATUS_PENDING = 0;
     const STATUS_IN_PROGRESS = 1;
     const STATUS_ENDED = 2;
+    const STATUS_IN_PENALTY = 3;
     
     /**
      * @var int
