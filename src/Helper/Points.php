@@ -47,6 +47,8 @@ class Points
         $predictions = $this->getPredictionTable()->fetchAllByMatch($match->id);
         /* @var $stage \MIAProde\Entity\Stage */
         $stage = $this->getStageTable()->fetchById($match->stage_id);
+        self::$POINTS_ONE = $stage->max_points;
+        self::$POINTS_TWO = 10;
         // Recorremos las predicciones
         foreach($predictions as $prediction){
             /* @var $prediction \MIAProde\Entity\Prediction */
