@@ -31,6 +31,10 @@ class PredictionController extends \MIAAuthentication\Controller\AuthCrudControl
         if($match === null){
             return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
         }
+        // Verificamos si el partido ya comenzo
+        if($match->status != \MIAProde\Entity\Match::STATUS_PENDING){
+            return $this->executeError(\MIABase\Controller\Api\Error::INVALID_CONFIGURATION);
+        }
         // Guardamos nueva predicción
         $this->getPredictionTable()->update($groupId, $matchId, $this->getUser()->id, $this->getParam('result_one', 0), $this->getParam('result_two', 0), $this->getParam('penalty_one', 0), $this->getParam('penalty_two', 0));
         // Devolvemos respuesta correcta
