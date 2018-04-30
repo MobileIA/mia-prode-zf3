@@ -64,7 +64,7 @@ class Points
                 // Sumar puntaje
                 $ranking->points += self::$POINTS_ONE;
                 $prediction->points = self::$POINTS_ONE;
-                if($stage->has_penalty == 1 && $match->penalty_one == $prediction->penalty_one && $match->penalty_two == $prediction->penalty_two){
+                if($stage->has_penalty == 1 && ($match->result_one == $match->result_two) && $match->penalty_one == $prediction->penalty_one && $match->penalty_two == $prediction->penalty_two){
                     $ranking->points += self::$POINTS_ONE;
                     $prediction->points = self::$POINTS_ONE + self::$POINTS_THREE;
                 }
@@ -73,7 +73,7 @@ class Points
             }else if( $match->result_one == $match->result_two && $prediction->result_one == $prediction->result_two ){
                 $ranking->points += self::$POINTS_TWO;
                 $prediction->points = self::$POINTS_TWO;
-                if($stage->has_penalty == 1 && $match->penalty_one == $prediction->penalty_one && $match->penalty_two == $prediction->penalty_two){
+                if($stage->has_penalty == 1 && ($match->result_one == $match->result_two) && $match->penalty_one == $prediction->penalty_one && $match->penalty_two == $prediction->penalty_two){
                     $ranking->points += self::$POINTS_THREE;
                     $prediction->points = self::$POINTS_TWO + self::$POINTS_THREE;
                 }
