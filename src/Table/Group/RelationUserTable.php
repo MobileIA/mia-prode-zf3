@@ -92,6 +92,16 @@ class RelationUserTable extends \MIABase\Table\Base
         return false;
     }
     /**
+     * Convertir el usuario en Administrador
+     * @param int $groupId
+     * @param int $userId
+     * @return int
+     */
+    public function convertToAdmin($groupId, $userId)
+    {
+        return $this->tableGateway->update(array('role' => \MIAProde\Entity\Group\RelationUser::ROLE_ADMIN), array('group_id' => $groupId, 'user_id' => $userId));
+    }
+    /**
      * Obtiene el registro si existe del usuario en el grupo
      * @param int $groupId
      * @param int $userId
