@@ -84,7 +84,7 @@ class MatchTable extends \MIABase\Table\Base
         // Crear Select
         $select = $this->createBaseSelect($userId, $tournamentId, $groupId);
         // Buscamos solo los nuevos
-        $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('(match.day >= NOW()) OR (match.status = '.\MIAProde\Entity\Match::STATUS_IN_PROGRESS.')'));
+        $select->where->addPredicate(new \Zend\Db\Sql\Predicate\Expression('(match.day >= NOW()) OR (match.status <> '.\MIAProde\Entity\Match::STATUS_PENDING.' AND match.status <> '.\MIAProde\Entity\Match::STATUS_ENDED.')'));
         // Configuramos el orden
         $select->order('day ASC');
         // traemos los primeros 3
