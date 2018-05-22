@@ -205,7 +205,7 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
                 return $this->executeError(\MIABase\Controller\Api\Error::REQUIRED_PARAMS);
             }
             // Eliminar del ranking de la DB
-            $this->getRankingTable()->removeByName($groupId, $userId);
+            $this->getRankingTable()->removeByName($groupId, $relationUser->username);
             // Eliminamos del grupo
             $this->getRelationUserTable()->deleteById($relationUser->id);
         }
