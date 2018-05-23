@@ -71,6 +71,26 @@ class FirebaseMessaging
         return $this->service->sendToTopicWithNotification('allusers-ios', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message), $title, $message);
     }
     /**
+     * Envia notificacion a todos los dispositivos de Test
+     * @param string $title
+     * @param string $message
+     * @return type
+     */
+    public function sendNotificationAllTest($title, $message)
+    {
+        return $this->service->sendToTopicWithNotification('all-test', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message), $title, $message);
+    }
+    /**
+     * Envia notificacion a todos los dispositivos de Test
+     * @param string $title
+     * @param string $message
+     * @return type
+     */
+    public function sendNotificationAll($title, $message)
+    {
+        return $this->service->sendToTopicWithNotification('all-prod', self::TYPE_CUSTOM_NOTIFICATION, array('title' => $title, 'message' => $message), $title, $message);
+    }
+    /**
      * Envia notificacion de que se acerto exactamente el resultado
      * @param array $tokens
      * @return type

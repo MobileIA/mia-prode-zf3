@@ -234,12 +234,16 @@ class GroupController extends \MIAAuthentication\Controller\AuthCrudController
             // Obtenemos todos los usuarios del grupo
             $users = $this->getRelationUserTable()->fetchAllByGroup($groupId);
             // Verificamos si contiene alguno
-            if(count($users) > 0){
+            foreach($users as $us){
+                if($us['user_id'] == 0){
+                    continue;
+                }
                 // Asignamos a otro usuario como administrador.
-                $this->getRelationUserTable()->convertToAdmin($groupId, $users[0]['user_id']);
+                $this->getRelationUserTable()->convertToAdmin($groupId, $us['user_id']);
                 // Guardar ID del nuevo usuario
-                $group->user_id = $users[0]['user_id'];
+                $group->user_id = $us['user_id'];
                 $this->getTable()->save($group);
+                break;
             }
         }
         // Eliminar usuario de la DB
