@@ -42,9 +42,9 @@ class Stage extends \MIABase\Entity\Base implements \Zend\InputFilter\InputFilte
     /**
      * @var int
      */
-    public $max_points = 5;
-    public $max_points_two = 5;
-    public $max_points_three = 5;
+    public $max_points = 30;
+    public $max_points_two = 10;
+    public $max_points_three = 10;
     
     /**
      * @var int

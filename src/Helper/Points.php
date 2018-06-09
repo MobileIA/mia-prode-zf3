@@ -39,7 +39,7 @@ class Points
     
     /**
      * Funcion que se encarga de buscar si existen predecciones y calcular los puntos
-     * @param \Application\Entity\Match $match
+     * @param \MIAProde\Entity\Match $match
      */
     public function calculatePoints($match)
     {
@@ -65,7 +65,7 @@ class Points
                 $ranking->points += self::$POINTS_ONE;
                 $prediction->points = self::$POINTS_ONE;
                 if($stage->has_penalty == 1 && ($match->result_one == $match->result_two) && $match->penalty_one == $prediction->penalty_one && $match->penalty_two == $prediction->penalty_two){
-                    $ranking->points += self::$POINTS_ONE;
+                    $ranking->points += self::$POINTS_THREE;
                     $prediction->points = self::$POINTS_ONE + self::$POINTS_THREE;
                 }
                 // Agregar el usuario a la lista
@@ -89,7 +89,30 @@ class Points
             $this->getPredictionTable()->save($prediction);
         }
     }
-    
+    /**
+     * Funcion que se encarga de recalcular los puntos de un partido que hubo algun problema
+     * @param \MIAProde\Entity\Match $match
+     */
+    public function recalculatePoints($match)
+    {
+        // Buscamos todas las predicciones hechas
+        $predictions = $this->getPredictionTable()->fetchAllByMatch($match->id);
+        // Recorremos las predicciones
+        foreach($predictions as $prediction){
+            // Descontamos los puntos en el ranking
+            // Obtener ranking del usuario
+            $ranking = $this->getRankingTable()->fetchByGroup($prediction->group_id, $prediction->user_id);
+            // Verificar si ya no existe
+            if($ranking == null){
+                continue;
+            }
+            $ranking->points -= $prediction->points;
+            // Guardar ranking
+            $this->getRankingTable()->save($ranking);
+        }
+        // Volvemos a calcular los puntos
+        $this->calculatePoints($match);
+    }
     public function sendPredictionCorrect()
     {
         // Verificar si hay que enviar a algun usuario
@@ -105,6 +128,9 @@ class Points
         }
         // Buscamos los tokens
         $tokens = $this->getMobileiaAuth()->getDevicesTokenOnly($miaIds);
+        if(count($tokens) == 0){
+            return false;
+        }
         // Enviamos notificación
         $firebaseHelper = new \MIAProde\Helper\FirebaseMessaging($this->getFirebaseMessaging());
         $firebaseHelper->sendPredictionCorrect($tokens);
