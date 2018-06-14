@@ -25,7 +25,7 @@ class MatchTable extends \MIABase\Table\Base
      * @param int $limit
      * @return array
      */
-    public function fetchNextByMatch($userId, $matchId, $day, $tournamentId, $groupId, $limit = 10, $exclude = '')
+    public function fetchNextByMatch($userId, $matchId, $day, $tournamentId, $groupId, $limit = 30, $exclude = '')
     {
         // Crear Select
         $select = $this->createBaseSelect($userId, $tournamentId, $groupId);
@@ -53,7 +53,7 @@ class MatchTable extends \MIABase\Table\Base
      * @param int $limit
      * @return array
      */
-    public function fetchPreviusByMatch($userId, $matchId, $day, $tournamentId, $groupId, $limit = 10, $exclude = '')
+    public function fetchPreviusByMatch($userId, $matchId, $day, $tournamentId, $groupId, $limit = 30, $exclude = '')
     {
         // Crear Select
         $select = $this->createBaseSelect($userId, $tournamentId, $groupId);
