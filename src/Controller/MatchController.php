@@ -98,8 +98,18 @@ class MatchController extends \MIAAuthentication\Controller\AuthCrudController
         $previous = array_reverse($previous);
         // Agregar partido al listado
         array_push($previous, $nextMatch);
+        // Obtener todos los IDs para excluir.
+        $exclude = array();
+        foreach($previous as $pre){
+            $exclude[] = $pre['id'];
+        }
+        if(count($exclude) > 0){
+            $exclude = implode(',', $exclude);
+        }else{
+            $exclude = '';
+        }
         // Obtenemos partidos proximos
-        $next = $this->getTable()->fetchNextByMatch($this->getUser()->id, $nextMatch['id'], $nextMatch['day'], $tournamentId, $groupId);
+        $next = $this->getTable()->fetchNextByMatch($this->getUser()->id, $nextMatch['id'], $nextMatch['day'], $tournamentId, $groupId, 30, $exclude);
         // Unimos en el listado
         return array_merge($previous, $next);
     }
