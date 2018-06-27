@@ -49,6 +49,16 @@ class RankingTable extends \MIABase\Table\Base
         return $this->tableGateway->update(array('user_id' => $userId), array('facebook_id' => $facebookId));
     }
     /**
+     * 
+     * @param int $id
+     * @param int $points
+     * @return int
+     */
+    public function updatePoints($id, $points)
+    {
+        return $this->tableGateway->update(array('points' => $points), array('id' => $id));
+    }
+    /**
      * Obtiene los primeros puestos del ranking
      * @param int $groupId
      * @return array

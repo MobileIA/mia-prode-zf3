@@ -65,4 +65,14 @@ class PredictionTable extends \MIABase\Table\Base
     {
         return $this->tableGateway->select(array('user_id' => $userId));
     }
+    /**
+     * Obtener todos las predicciones del usuario en un determinado grupo
+     * @param int $groupId
+     * @param int $userId
+     * @return array
+     */
+    public function fetchAllByGroup($groupId, $userId)
+    {
+        return $this->tableGateway->select(array('group_id' => $groupId, 'user_id' => $userId));
+    }
 }
